@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cloud Readiness Assessment | Hisham Ahmad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --surface: #161b2a;
+      --surface-light: #1f2937;
+      --surface-soft: rgba(255,255,255,0.03);
+      --primary: #3b82f6;
+      --primary-glow: rgba(59, 130, 246, 0.35);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border: rgba(255, 255, 255, 0.08);
+      --radius-lg: 20px;
+      --radius-md: 12px;
+      --max-width: 1200px;
+      --font: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      outline: none;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.06) 0%, transparent 45%),
+        radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.04) 0%, transparent 40%);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: min(92%, var(--max-width));
+      margin: 0 auto;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(11, 15, 26, 0.82);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      gap: 1rem;
+    }
+
+    .brand {
+      font-size: 1.2rem;
+      font-weight: 800;
+      background: linear-gradient(to right, #60a5fa, #34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-main);
+    }
+
+    .hero {
+      padding: 6rem 0 4rem;
+      text-align: center;
+    }
+
+    .badge-top {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      color: #93c5fd;
+      border-radius: 99rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      line-height: 1.08;
+      margin: 0 0 1.5rem;
+      letter-spacing: -0.03em;
+    }
+
+    .hero p {
+      font-size: 1.08rem;
+      color: var(--text-muted);
+      max-width: 820px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .glass-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.9rem 1.8rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 15px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--primary-glow);
+    }
+
+    .btn-secondary {
+      background: var(--surface-light);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    section {
+      padding: 2rem 0;
+    }
+
+    .domain-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .domain-header h2 {
+      font-size: 1.5rem;
+      margin: 0;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    .domain-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .section-intro {
+      color: var(--text-muted);
+      max-width: 850px;
+      margin-bottom: 2rem;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .feature-card {
+      padding: 1.5rem;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .feature-card h3 {
+      font-size: 1.05rem;
+      margin-top: 0;
+      margin-bottom: 0.75rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .feature-card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 0;
+      line-height: 1.55;
+    }
+
+    .mini-note {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-top: 1rem;
+    }
+
+    .assessment-container {
+      max-width: 980px;
+      margin: 3rem auto 0;
+    }
+
+    .domain-group {
+      margin-bottom: 3rem;
+      animation: fadeIn 0.45s ease-out forwards;
+    }
+
+    .question-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.4rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .question-card:focus-within {
+      border-color: var(--primary);
+    }
+
+    .question-card:hover {
+      transform: translateY(-1px);
+    }
+
+    .question-text {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .option-item {
+      position: relative;
+    }
+
+    .option-item input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0.75rem 1rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .option-item input:checked + .option-label {
+      background: rgba(59, 130, 246, 0.15);
+      border-color: var(--primary);
+      color: #cfe1ff;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.1);
+    }
+
+    .center-action {
+      text-align: center;
+      padding-top: 1rem;
+    }
+
+    .results-dashboard {
+      display: none;
+      padding: 4rem 0 5rem;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 2rem;
+    }
+
+    .score-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+    }
+
+    .eyebrow-result {
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .big-score {
+      font-size: 5rem;
+      font-weight: 800;
+      line-height: 1;
+      margin: 0;
+      background: linear-gradient(to bottom, #fff, #9ca3af);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .status-badge {
+      display: inline-block;
+      margin: 1rem 0 0.75rem;
+      padding: 0.55rem 1.4rem;
+      border-radius: 99rem;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .summary-text {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 360px;
+    }
+
+    .domain-breakdown {
+      margin-top: 2rem;
+      width: 100%;
+    }
+
+    .domain-bar-container {
+      margin-bottom: 1.1rem;
+    }
+
+    .domain-bar-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.45rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      gap: 1rem;
+    }
+
+    .progress-track {
+      height: 8px;
+      background: var(--bg);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      width: 0%;
+      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .insights-column {
+      border-left: 1px solid var(--border);
+      padding-left: 2rem;
+    }
+
+    .panel-block {
+      margin-bottom: 1.8rem;
+    }
+
+    .panel-block h3,
+    .panel-block h4 {
+      margin-top: 0;
+      margin-bottom: 0.7rem;
+    }
+
+    .panel-block p {
+      color: var(--text-muted);
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    .gap-item {
+      padding: 0.8rem 1rem;
+      background: rgba(239, 68, 68, 0.05);
+      border-left: 3px solid var(--danger);
+      margin-bottom: 0.75rem;
+      font-size: 0.92rem;
+      border-radius: 0 6px 6px 0;
+      color: #f3f4f6;
+    }
+
+    .gap-item.good {
+      border-left-color: var(--success);
+      background: rgba(16, 185, 129, 0.06);
+    }
+
+    .action-row {
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    footer {
+      padding: 3rem 0 4rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .insights-column {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid var(--border);
+        padding-top: 2rem;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .hero {
+        padding: 4.5rem 0 2.5rem;
+      }
+
+      .nav-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .big-score {
+        font-size: 4rem;
+      }
+
+      .glass-card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand">HISHAM AHMAD</a>
+      <div class="nav-links">
+        <a href="#assessment">Start</a>
+        <a href="#purpose">Purpose</a>
+        <a href="#methodology">Methodology</a>
+        <a href="#results">Results</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <span class="badge-top">Cloud Advisory Framework</span>
+      <h1>Cloud Readiness Assessment</h1>
+      <p>
+        Analyze infrastructure, security, backup, governance, and operations to determine the
+        most appropriate cloud migration path for your organization. This assessment is not
+        intended to block migration — it identifies the gaps, risks, and sequencing required
+        before moving critical workloads.
+      </p>
+      <div class="hero-actions">
+        <a href="#assessment" class="btn btn-primary">Begin Assessment</a>
+        <a href="#purpose" class="btn btn-secondary">Why This Matters</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section id="purpose">
+      <div class="domain-header">
+        <h2>Why This Assessment Matters</h2>
+        <div class="domain-line"></div>
+      </div>
+      <p class="section-intro">
+        Most organizations can begin cloud adoption in some form, but poor preparation often leads to
+        failed recovery, weak security controls, cost overrun, or production instability. The purpose
+        of this assessment is to identify readiness gaps early so migration can be planned safely and
+        realistically.
+      </p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3><span>01.</span> Identify Gaps</h3>
+          <p>Highlights missing controls, undocumented dependencies, weak backup practices, unclear ownership, and governance issues before critical workloads are moved.</p>
+        </div>
+        <div class="feature-card">
+          <h3><span>02.</span> Reduce Risk</h3>
+          <p>Helps reduce migration risk by surfacing weak areas in security, recovery, monitoring, and operational preparedness before execution begins.</p>
+        </div>
+        <div class="feature-card">
+          <h3><span>03.</span> Plan the Right Path</h3>
+          <p>Determines whether the organization should begin with a pilot, a phased migration, or is ready for a broader production rollout.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="methodology">
+      <div class="domain-header">
+        <h2>Assessment Methodology</h2>
+        <div class="domain-line"></div>
+      </div>
+      <p class="section-intro">
+        This assessment evaluates five key readiness domains independently so that localized risk is
+        not hidden by a strong overall average. Some areas are treated as higher-risk signals because
+        they directly affect migration safety, recovery capability, and operational control.
+      </p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3>Domain-Based Scoring</h3>
+          <p>Infrastructure, Security, Backup, Operations, and Governance are scored separately to reveal where remediation is actually needed.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Risk-Oriented Interpretation</h3>
+          <p>Critical gaps such as no MFA, undefined RTO/RPO, or untested backups are treated as stronger warning signals even if the total score looks reasonable.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Migration Guidance</h3>
+          <p>The result is not just a score. It also provides a recommended migration approach, meaning, and next step to guide customer decision-making.</p>
+        </div>
+      </div>
+
+      <p class="mini-note">
+        Scoring model: <strong>Yes / Mature = 5</strong>, <strong>Partial / Inconsistent = 3</strong>,
+        <strong>Weak / Minimal = 2</strong>, <strong>No / Undefined = 0</strong>
+      </p>
+    </section>
+
+    <div class="assessment-container" id="assessment">
+      <form id="assessmentForm">
+
+        <div class="domain-group">
+          <div class="domain-header">
+            <h2>01. Infrastructure</h2>
+            <div class="domain-line"></div>
+          </div>
+
+          <div class="question-card">
+            <span class="question-text">Are core workloads currently virtualized and abstracted from physical hardware?</span>
+            <div class="options-grid">
+              <div class="option-item"><input type="radio" name="infra1" value="5" id="infra1a"><label for="infra1a" class="option-label">Yes / Mature</label></div>
+              <div class="option-item"><input type="radio" name="infra1" value="3" id="infra1b"><label for="infra1b" class="option-label">Partial</label></div>
+              <div class="option-item"><input type="radio" name="infra1" value="0" id="infra1c"><label for="infra1c" class="option-label">No</label></div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <span class="question-text">Is infrastructure performance, capacity, and utilization documented for recent periods?</span>
+            <div class="options-grid">
+              <div class="option-item"><input type="radio" name="infra2" value="5" id="infra2a"><label for="infra2a" class="option-label">Yes / Current</label></div>
+              <div class="option-item"><input type="radio" name="infra2" value="3" id="infra2b"><label for="infra2b" class="option-label">Inconsistent</label></div>
+              <div class="option-item"><input type="radio" name="infra2" value="0" id="infra2c"><label for="infra2c" class="option-label">No</label></div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <span class="question-text">Are application, database, and network dependencies clearly mapped?</span>
+            <div class="options-grid">
+              <div class="option-item"><input type="radio" name="infra3" value="5" id="infra3a"><label for="infra3a" class="option-label">Fully Mapped</label></div>
+              <div class="option-item"><input type="radio" name="infra3" value="2" id="infra3b"><label for="infra3b" class="option-label">Partially Known</label></div>
+              <div class="option-item"><input type="radio" name="infra3" value="0" id="infra3c"><label for="infra3c" class="option-label">Not Clear</label></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="domain-group">
+          <div class="domain-header">
+            <h2>02. Security & Compliance</h2>
+            <div class="domain-line"></div>
+          </div>
+
+          <div class="question-card">
+            <span class="question-text">Is MFA enforced for all administrative and privileged access?</span>
+            <div class="options-grid">
+              <div class="option-item"><input type="radio" name="sec1" value="5" id="sec1a"><label for="sec1a" class="option-label">Mandatory</label></div>
+              <div class="option-item"><input type="radio" name="sec1" value="2" id="sec1b"><label for="sec1b" class="option-label">Some Accounts</label></div>
+              <div class="option-item"><input type="radio" name="sec1" value="0" id="sec1c"><label for="sec1c" class="option-label">Not Enforced</label></div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <span class="question-text">Is there a centralized IAM, SSO, or access governance strategy in place?</span>
+            <div class="options-grid">
+              <div class="option-item"><input type="radio" name="sec2" value="5" id="sec2a"><label for="sec2a" class="option-label">Centralized</label></div>
+              <div class="option-item"><input type="radio" name="sec2" value="2" id="sec2b"><label for="sec2b" class="option-label">Fragmented</label></div>
+              <div class="option-item"><input type="radio" name="sec2" value="0" id="sec2c"><label for="sec2c" class="option-label">Manual / Ad-hoc</label></div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <span class="question-text">Are regulatory, compliance, or data handling requirements clearly defined for cloud workloads?</span>
+            <div class="options-grid">
+              <div class="option-item"><input type="radio" name="sec3" value="5" id="sec3a"><label for="sec3a" class="option-label">Defined</label></div>
+              <div class="option-item"><input type="radio" name="sec3" value="2" id="sec3b"><label for="sec3b" class="option-label">Partially Known</label></div>
+              <div class="option-item"><input type="radio" name="sec3" value="0" id="sec3c"><label for="sec3c" class="option-label">Undefined</label></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="domain-group">
+          <div class="domain-header">
+            <h2>03. Backup & Recovery</h2>
+            <div class="domain-line"></div>
+          </div>
+
+          <div class="question-card">
+            <span class="question-text">Is there a documented backup policy for critical workloads and data sets?</span>
+            <div class="options-grid">
+              <div class="option-item"><input type="radio" name="bkp1" value="5" id="bkp1a"><label for="bkp1a" class="option-label">Documented</label></div>
+              <div class="option-item"><input type="radio" name="bkp1" value="3" id="bkp1b"><label for="bkp1b" class="option-label">Partial</label></div>
+              <div class="option-item"><input type="radio" name="bkp1" value="0" id="bkp1c"><label for="bkp1c" class="option-label">No Policy</label></div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <span class="question-text">Are backup recovery tests performed regularly and validated successfully?</span>
+            <div class="options-grid">
+              <div class="option-item"><input type="radio" name="bkp2" value="5" id="bkp2a"><label for="bkp2a" class="option-label">Regularly Tested</label></div>
+              <div class="option-item"><input type="radio" name="bkp2" value="2" id="bkp2b"><label for="bkp2b" class="option-label">Occasional</label></div>
+              <div class="option-item"><input type="radio" name="bkp2" value="0" id="bkp2c"><label for="bkp2c" class="option-label">Never Tested</label></div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <span class="question-text">Are RTO and RPO targets formally defined for important workloads?</span>
+            <div class="options-grid">
+              <div class="option-item"><input type="radio" name="bkp3" value="5" id="bkp3a"><label for="bkp3a" class="option-label">Defined</label></div>
+              <div class="option-item"><input type="radio" name="bkp3" value="3" id="bkp3b"><label for="bkp3b" class="option-label">Partially Defined</label></div>
+              <div class="option-item"><input type="radio" name="bkp3" value="0" id="bkp3c"><label for="bkp3c" class="option-label">Undefined</label></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="domain-group">
+          <div class="domain-header">
+            <h2>04. Operations & Monitoring</h2>
+            <div class="domain-line"></div>
+          </div>
+
+          <div class="question-card">
+            <span class="question-text">Are infrastructure monitoring, logging, and alerting capabilities centralized?</span>
+            <div class="options-grid">
+              <div class="option-item"><input type="radio" name="ops1" value="5" id="ops1a"><label for="ops1a" class="option-label">Centralized</label></div>
+              <div class="option-item"><input type="radio" name="ops1" value="2" id="ops1b"><label for="ops1b" class="option-label">Multiple Tools</label></div>
+              <div class="option-item"><input type="radio" name="ops1" value="0" id="ops1c"><label for="ops1c" class="option-label">Minimal</label></div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <span class="question-text">Is there a formal incident response or service recovery process for outages and failures?</span>
+            <div class="options-grid">
+              <div class="option-item"><input type="radio" name="ops2" value="5" id="ops2a"><label for="ops2a" class="option-label">Formal & Tested</label></div>
+              <div class="option-item"><input type="radio" name="ops2" value="3" id="ops2b"><label for="ops2b" class="option-label">Ad-hoc</label></div>
+              <div class="option-item"><input type="radio" name="ops2" value="0" id="ops2c"><label for="ops2c" class="option-label">None</label></div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <span class="question-text">Are patching, maintenance, and operational ownership consistently managed?</span>
+            <div class="options-grid">
+              <div class="option-item"><input type="radio" name="ops3" value="5" id="ops3a"><label for="ops3a" class="option-label">Consistent</label></div>
+              <div class="option-item"><input type="radio" name="ops3" value="3" id="ops3b"><label for="ops3b" class="option-label">Partially Managed</label></div>
+              <div class="option-item"><input type="radio" name="ops3" value="0" id="ops3c"><label for="ops3c" class="option-label">Weak / Undefined</label></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="domain-group">
+          <div class="domain-header">
+            <h2>05. Governance & Cost</h2>
+            <div class="domain-line"></div>
+          </div>
+
+          <div class="question-card">
+            <span class="question-text">Is there a cloud governance model or landing zone standard already defined?</span>
+            <div class="options-grid">
+              <div class="option-item"><input type="radio" name="gov1" value="5" id="gov1a"><label for="gov1a" class="option-label">Defined</label></div>
+              <div class="option-item"><input type="radio" name="gov1" value="3" id="gov1b"><label for="gov1b" class="option-label">Partial</label></div>
+              <div class="option-item"><input type="radio" name="gov1" value="0" id="gov1c"><label for="gov1c" class="option-label">None</label></div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <span class="question-text">Are budgets, cost visibility, or spend control mechanisms already in place?</span>
+            <div class="options-grid">
+              <div class="option-item"><input type="radio" name="gov2" value="5" id="gov2a"><label for="gov2a" class="option-label">Yes</label></div>
+              <div class="option-item"><input type="radio" name="gov2" value="3" id="gov2b"><label for="gov2b" class="option-label">Limited</label></div>
+              <div class="option-item"><input type="radio" name="gov2" value="0" id="gov2c"><label for="gov2c" class="option-label">No</label></div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <span class="question-text">Are workload owners, business criticality, and accountability clearly defined?</span>
+            <div class="options-grid">
+              <div class="option-item"><input type="radio" name="gov3" value="5" id="gov3a"><label for="gov3a" class="option-label">Clearly Defined</label></div>
+              <div class="option-item"><input type="radio" name="gov3" value="3" id="gov3b"><label for="gov3b" class="option-label">Partially Known</label></div>
+              <div class="option-item"><input type="radio" name="gov3" value="0" id="gov3c"><label for="gov3c" class="option-label">Unclear</label></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="center-action">
+          <button type="button" class="btn btn-primary" onclick="generateResults()">Generate Readiness Report</button>
+        </div>
+      </form>
+    </div>
+
+    <section id="results" class="results-dashboard">
+      <div class="glass-card">
+        <div class="results-grid">
+          <div class="score-card">
+            <p class="eyebrow-result">Overall Readiness Score</p>
+            <h2 class="big-score" id="scoreDisplay">0%</h2>
+            <div id="statusBadge" class="status-badge">Calculating...</div>
+            <p class="summary-text" id="scoreSummary">
+              Complete the assessment to view your readiness interpretation.
+            </p>
+
+            <div class="domain-breakdown">
+              <div class="domain-bar-container">
+                <div class="domain-bar-label"><span>Infrastructure</span><span id="infra-val">0%</span></div>
+                <div class="progress-track"><div class="progress-fill" id="infra-bar"></div></div>
+              </div>
+              <div class="domain-bar-container">
+                <div class="domain-bar-label"><span>Security</span><span id="sec-val">0%</span></div>
+                <div class="progress-track"><div class="progress-fill" id="sec-bar"></div></div>
+              </div>
+              <div class="domain-bar-container">
+                <div class="domain-bar-label"><span>Backup & Recovery</span><span id="bkp-val">0%</span></div>
+                <div class="progress-track"><div class="progress-fill" id="bkp-bar"></div></div>
+              </div>
+              <div class="domain-bar-container">
+                <div class="domain-bar-label"><span>Operations</span><span id="ops-val">0%</span></div>
+                <div class="progress-track"><div class="progress-fill" id="ops-bar"></div></div>
+              </div>
+              <div class="domain-bar-container">
+                <div class="domain-bar-label"><span>Governance</span><span id="gov-val">0%</span></div>
+                <div class="progress-track"><div class="progress-fill" id="gov-bar"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="insights-column">
+            <div class="panel-block">
+              <h3>Key Gaps Identified</h3>
+              <div id="gapsContainer"></div>
+            </div>
+
+            <div class="panel-block">
+              <h4>Recommended Migration Approach</h4>
+              <p id="migrationApproach"></p>
+            </div>
+
+            <div class="panel-block">
+              <h4>What This Means</h4>
+              <p id="meaningText"></p>
+            </div>
+
+            <div class="panel-block">
+              <h4>Recommended Next Step</h4>
+              <p id="nextStepText"></p>
+            </div>
+
+            <div class="action-row">
+              <button class="btn btn-secondary" onclick="window.print()">Print / Save PDF</button>
+              <button class="btn btn-primary" onclick="resetAssessment()">Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    &copy; 2026 Hisham Ahmad Advisory. Prepared for cloud migration readiness evaluation.
+  </footer>
+
+  <script>
+    const domainMap = {
+      infra: {
+        label: "Infrastructure",
+        questions: ["infra1", "infra2", "infra3"]
+      },
+      sec: {
+        label: "Security",
+        questions: ["sec1", "sec2", "sec3"]
+      },
+      bkp: {
+        label: "Backup & Recovery",
+        questions: ["bkp1", "bkp2", "bkp3"]
+      },
+      ops: {
+        label: "Operations",
+        questions: ["ops1", "ops2", "ops3"]
+      },
+      gov: {
+        label: "Governance",
+        questions: ["gov1", "gov2", "gov3"]
+      }
+    };
+
+    const questionLabels = {
+      infra1: "Core workloads are not sufficiently virtualized.",
+      infra2: "Infrastructure performance and capacity documentation is incomplete or unavailable.",
+      infra3: "Application and network dependencies are not clearly mapped.",
+      sec1: "Critical security gap: MFA is not enforced for administrative access.",
+      sec2: "Access management is fragmented and not centrally governed.",
+      sec3: "Compliance or data handling requirements are not clearly defined for cloud adoption.",
+      bkp1: "Backup policy for critical workloads is missing or incomplete.",
+      bkp2: "Recovery testing is weak or not performed regularly.",
+      bkp3: "RTO and RPO targets are not formally defined.",
+      ops1: "Monitoring, logging, and alerting are not sufficiently centralized.",
+      ops2: "Incident response or recovery process is weak or undefined.",
+      ops3: "Operational ownership, maintenance, or patching is inconsistently managed.",
+      gov1: "Cloud governance or landing zone standards are not established.",
+      gov2: "Cost visibility and spend controls are limited or absent.",
+      gov3: "Workload ownership and business criticality are not clearly defined."
+    };
+
+    const showstopperQuestions = ["sec1", "bkp2", "bkp3", "gov1"];
+
+    function generateResults() {
+      const form = document.getElementById("assessmentForm");
+      const formData = new FormData(form);
+
+      let totalPossible = 0;
+      let totalActual = 0;
+      let gaps = [];
+      let showstoppers = [];
+
+      const domainScores = {};
+
+      for (const domainKey in domainMap) {
+        const domain = domainMap[domainKey];
+        let sum = 0;
+        let count = 0;
+
+        for (const q of domain.questions) {
+          const val = formData.get(q);
+
+          if (val === null) {
+            alert("Please answer all questions before proceeding.");
+            return;
+          }
+
+          const numericVal = parseInt(val, 10);
+          sum += numericVal;
+          count++;
+          totalActual += numericVal;
+          totalPossible += 5;
+
+          if (numericVal <= 3) {
+            gaps.push({
+              label: questionLabels[q],
+              score: numericVal
+            });
+          }
+
+          if (showstopperQuestions.includes(q) && numericVal === 0) {
+            showstoppers.push(questionLabels[q]);
+          }
+        }
+
+        domainScores[domainKey] = Math.round((sum / (count * 5)) * 100);
+      }
+
+      const totalPercent = Math.round((totalActual / totalPossible) * 100);
+
+      let level = "";
+      let badgeBg = "";
+      let badgeColor = "";
+      let migrationApproach = "";
+      let meaning = "";
+      let nextStep = "";
+
+      // Base interpretation
+      if (totalPercent >= 80) {
+        level = "Strong Readiness";
+        badgeBg = "rgba(16, 185, 129, 0.16)";
+        badgeColor = "#10b981";
+        migrationApproach = "Proceed with structured migration planning, workload wave design, and production onboarding.";
+        meaning = "The organization shows a strong baseline for cloud adoption. Critical and non-critical workloads can generally move forward, provided detailed planning, sequencing, and architecture validation are completed.";
+        nextStep = "Begin architecture review, workload prioritization, landing zone confirmation, and migration wave planning.";
+      } else if (totalPercent >= 60) {
+        level = "Moderate Readiness";
+        badgeBg = "rgba(59, 130, 246, 0.16)";
+        badgeColor = "#60a5fa";
+        migrationApproach = "Begin with low-risk or non-critical workloads while addressing identified gaps in parallel.";
+        meaning = "Cloud migration is achievable, but the environment is not yet ideal for immediately moving business-critical workloads. A phased migration approach is safer while key remediation items are completed.";
+        nextStep = "Address major security, backup, governance, or operational gaps, then start with pilot or lower-risk workloads.";
+      } else if (totalPercent >= 40) {
+        level = "Limited Readiness";
+        badgeBg = "rgba(245, 158, 11, 0.16)";
+        badgeColor = "#f59e0b";
+        migrationApproach = "Start with a pilot migration or development/test environment only while remediation work is performed.";
+        meaning = "This result does not mean cloud migration is impossible. It means the organization should avoid moving business-critical production workloads immediately. Migration should begin only in a controlled, low-risk scope while foundational issues are corrected.";
+        nextStep = "Perform targeted remediation across weak domains, define recovery objectives, strengthen controls, and run a pilot before expanding further.";
+      } else {
+        level = "Significant Gaps";
+        badgeBg = "rgba(239, 68, 68, 0.16)";
+        badgeColor = "#ef4444";
+        migrationApproach = "Pause production migration plans and complete foundational remediation before moving any critical workloads.";
+        meaning = "Cloud migration may still be possible in the future, but there are currently too many foundational gaps to safely move production systems. Immediate focus should be on basic controls, operational readiness, recovery planning, and governance.";
+        nextStep = "Establish core security controls, backup and recovery requirements, governance standards, and clear workload ownership before migration begins.";
+      }
+
+      // Downgrade if showstopper exists
+      if (showstoppers.length > 0) {
+        if (level === "Strong Readiness") {
+          level = "Moderate Readiness";
+          badgeBg = "rgba(59, 130, 246, 0.16)";
+          badgeColor = "#60a5fa";
+          migrationApproach = "Begin with low-risk workloads only after urgent remediation is initiated for critical control gaps.";
+          meaning = "Although the total score appears strong, one or more critical control gaps were identified. These issues directly affect migration safety and should be addressed before broad production migration.";
+          nextStep = "Prioritize urgent remediation of the critical gaps listed below, then re-assess readiness before moving sensitive or high-value workloads.";
+        } else if (level === "Moderate Readiness") {
+          level = "Limited Readiness";
+          badgeBg = "rgba(245, 158, 11, 0.16)";
+          badgeColor = "#f59e0b";
+          migrationApproach = "Restrict migration to pilot or non-production workloads until the critical gaps are closed.";
+          meaning = "The overall score suggests progress is possible, but at least one showstopper gap materially increases migration risk. A controlled pilot may still proceed, but only after immediate attention is given to the critical issue.";
+          nextStep = "Remediate the showstopper control gaps first, then proceed with a limited pilot rather than direct production migration.";
+        } else if (level === "Limited Readiness") {
+          level = "Significant Gaps";
+          badgeBg = "rgba(239, 68, 68, 0.16)";
+          badgeColor = "#ef4444";
+          migrationApproach = "Do not move production workloads yet. Complete critical remediation before proceeding beyond assessment or planning.";
+          meaning = "In addition to the low readiness score, at least one critical gap was identified that directly affects security, recoverability, or governance. This combination makes production migration unsafe at this stage.";
+          nextStep = "Resolve the critical showstopper issues first, then revisit migration planning with a smaller pilot scope.";
+        }
+      }
+
+      document.getElementById("scoreDisplay").innerText = totalPercent + "%";
+
+      const badge = document.getElementById("statusBadge");
+      badge.innerText = level;
+      badge.style.background = badgeBg;
+      badge.style.color = badgeColor;
+
+      document.getElementById("scoreSummary").innerText =
+        `Your current environment is assessed as ${level}. This result is intended to guide migration sequencing and remediation priorities, not simply to approve or reject cloud migration.`;
+
+      updateBar("infra", domainScores.infra);
+      updateBar("sec", domainScores.sec);
+      updateBar("bkp", domainScores.bkp);
+      updateBar("ops", domainScores.ops);
+      updateBar("gov", domainScores.gov);
+
+      gaps.sort((a, b) => a.score - b.score);
+
+      const uniqueGapLabels = [];
+      const seen = new Set();
+      for (const gap of gaps) {
+        if (!seen.has(gap.label)) {
+          seen.add(gap.label);
+          uniqueGapLabels.push(gap.label);
+        }
+      }
+
+      const topGaps = uniqueGapLabels.slice(0, 6);
+      const gapsContainer = document.getElementById("gapsContainer");
+      gapsContainer.innerHTML = "";
+
+      if (showstoppers.length > 0) {
+        showstoppers.forEach(item => {
+          const div = document.createElement("div");
+          div.className = "gap-item";
+          div.innerText = "Critical gap: " + item;
+          gapsContainer.appendChild(div);
+        });
+      }
+
+      if (topGaps.length === 0) {
+        const div = document.createElement("div");
+        div.className = "gap-item good";
+        div.innerText = "No major gaps were identified from the submitted responses.";
+        gapsContainer.appendChild(div);
+      } else {
+        topGaps.forEach(label => {
+          if (showstoppers.includes(label)) return;
+          const div = document.createElement("div");
+          div.className = "gap-item";
+          div.innerText = label;
+          gapsContainer.appendChild(div);
+        });
+      }
+
+      document.getElementById("migrationApproach").innerText = migrationApproach;
+      document.getElementById("meaningText").innerText = meaning;
+      document.getElementById("nextStepText").innerText = nextStep;
+
+      document.getElementById("results").style.display = "block";
+      window.scrollTo({
+        top: document.getElementById("results").offsetTop - 90,
+        behavior: "smooth"
+      });
+    }
+
+    function updateBar(id, val) {
+      document.getElementById(`${id}-val`).innerText = val + "%";
+      document.getElementById(`${id}-bar`).style.width = val + "%";
+    }
+
+    function resetAssessment() {
+      document.getElementById("assessmentForm").reset();
+      document.getElementById("results").style.display = "none";
+
+      ["infra", "sec", "bkp", "ops", "gov"].forEach(id => {
+        document.getElementById(`${id}-val`).innerText = "0%";
+        document.getElementById(`${id}-bar`).style.width = "0%";
+      });
+
+      window.scrollTo({
+        top: document.getElementById("assessment").offsetTop - 90,
+        behavior: "smooth"
+      });
+    }
+  </script>
+</body>
+</html>
