@@ -214,6 +214,7 @@
     .section-intro {
       color: var(--text-muted);
       width: 100%;
+      max-width: none;
       margin-bottom: 2rem;
     }
 
